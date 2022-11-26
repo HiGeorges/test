@@ -1,0 +1,49 @@
+import { IsNotEmpty, IsString } from 'class-validator';
+import { IUser } from '../entities/user.entity';
+
+export class PaymentsDto {
+  @IsString()
+  @IsNotEmpty()
+  msisdn: string;
+  @IsString()
+  @IsNotEmpty()
+  amount: string;
+  @IsString()
+  @IsNotEmpty()
+  transref: string;
+  @IsString()
+  @IsNotEmpty()
+  userId: IUser;
+}
+export class PaymentsCreateDto extends PaymentsDto {}
+
+export const QOS_MTN_REQUEST_PAYMENT_RESPONSE = {
+  PENDING: 'PAYMENT.PENDING.WAITING_USER_VALIDATION',
+  FAILED: 'PAYMENT.ERROR.PAYMENT_FAILED_OR_TIMEOUT',
+  ACCOUNTHOLDER_WITH_FRI_NOT_FOUND:
+    'PAYMENT.ERROR.ANOTHER_NETWORK_PAYMENT_NUMBER',
+  TARGET_AUTHORIZATION_ERROR: 'PAYMENT.ERROR.LOW_BALANCE',
+  RESOURCE_NOT_FOUND: 'PAYMENT.ERROR.RESOURCE_NOT_FOUND',
+  SUCCESSFUL: 'PAYMENT.SUCCESS.PAYMENT_SUCCESSFUL',
+};
+
+export const QOS_MTN_REQUEST_PAYMENT_STATUSCODE = {
+  PENDING: '01',
+  FAILED: '-1',
+  ACCOUNTHOLDER_WITH_FRI_NOT_FOUND: '515',
+  TARGET_AUTHORIZATION_ERROR: '529',
+  RESOURCE_NOT_FOUND: '527',
+  SUCCESSFUL: '00',
+};
+
+export const QOS_MOOV_REQUEST_PAYMENT_RESPONSE = {
+  FAILED: 'PAYMENT.ERROR.PAYMENT_FAILED_OR_TIMEOUT',
+  INSUFFICIENT_FUND_ERROR: 'PAYMENT.ERROR.LOW_BALANCE',
+  SUCCESS: 'PAYMENT.SUCCESS.PAYMENT_SUCCESSFUL',
+};
+
+export const QOS_MOOV_REQUEST_PAYMENT_STATUSCODE = {
+  FAILED: '92',
+  INSUFFICIENT_FUND_ERROR: '10',
+  SUCCESS: '0',
+};
