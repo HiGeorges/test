@@ -36,22 +36,12 @@ if(isset($_POST['FullName'], $_POST['Email'],  $_POST['Password'], $_POST['Passw
         $UserID = date("s");
         $UserID .= $UserManage->CountUserID();
         $UserID .= bin2hex(openssl_random_pseudo_bytes(4));
+        $codeParrain = $codeParrain ?? 'Admin';
         if($UserPassword === $PasswordConfirm){
             $UserPassword = password_hash($UserPassword, PASSWORD_BCRYPT);
             if(!$UserManage->CheckUserExist($UserEmail)){
                 if($UserManage->SaveNewUser($UserID, $UserName, $UserEmail, $UserPassword,$codeParrain)){
-                    require_once ('mailer/vendor/autoload.php');
-                    $receiver = $UserEmail;
-                    $FullName = $UserName;
-                    $objet = "Bienvenue " ;
-                    require_once('mailer/connect_mail.php');
-                    require_once('MailBoites/welcomeMail.php');
-                 //   $message->setBody($corps, 'text/html');
-                 //   $result = $mailer->send($message);
-                  //  unset($message);
                     header('Location: interdash');
-
-
 
                 }else{
                     $db->DbError($dblink);

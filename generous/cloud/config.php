@@ -53,6 +53,6 @@ $App_link .= "://";
 
 $App_link .= $_SERVER['HTTP_HOST'];
 
-const APP_NAME =  "Xendizy";
+const APP_NAME =  "Lazare";
 
 define("APP_LINK", $App_link);
