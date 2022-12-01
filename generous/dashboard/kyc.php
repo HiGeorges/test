@@ -3,12 +3,15 @@
     require_once '../cloud/head.php' ;
     require_once '../class/Database.php';
     require_once '../class/Auth.php';
+    require_once '../class/Retrait.php';
 ?>
 
 <?php
 $db = new Database();
 $dblink = $db->db_connect();
 $UserManage = new Auth($dblink);
+$UserRetrait = new Retrait($dblink);
+
 
 ?>
 
@@ -60,52 +63,38 @@ $UserManage = new Auth($dblink);
                 $Status = 1;
                 if(is_int($UserPhoneNumber) && $UserPhoneNumber >8){
 
-                    if (isset($_FILES['cover']) and !empty($_FILES['cover']['name'])) {
-                        $tailleMax = 2097152;
-                        $extensionsValides = array('jpg', 'jpeg', 'gif', 'png');
-                        if ($_FILES['cover']['size'] <= $tailleMax) {
-                            $extensionUpload = strtolower(substr(strrchr($_FILES['cover']['name'], '.'), 1));
-                            if (in_array($extensionUpload, $extensionsValides)) {
-                                $file_name = $_FILES['cover']['name'];
-
-                                $temp_file_location = $_FILES['cover']['tmp_name']; //le fichier
-                                //ENVOI DANS AWS S3
-                                require_once '../library/aws/vendor/autoload.php';
-
-                                $s3 = new Aws\S3\S3Client([
-                                    'region' => 'us-east-2',
-                                    'version' => 'latest',
-                                    'credentials' => [
-                                        'key' => "AKIA36XEYSQMDV3ZUK5Q",
-                                        'secret' => "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",
-                                    ],
-                                ]);
-                                $result = $s3->putObject([
-                                    'Bucket' => 'axastockage',
-                                    'ACL' => 'public-read',
-                                    'Key' => 'images/' . $file_name . '',
-                                    'SourceFile' => $temp_file_location,
-                                ]);
-                                //ENVOI TERMINE
-                                if ($result) {
-                                    $cover = "https://axastockage.s3.us-east-2.amazonaws.com/images/$file_name";
-
-                                    if($UserManage->UpdateIdentityInfos($UserID, $UserPhoneNumber, $cover, $Status )){
-                                        $UserInfosFecth =  $UserManage->GetOneUserInfos($UserID)->fetch_object();
-                                        $success = "Votre demande de verification est soumis avec succès";
+                    if (isset($_POST['solde']) and !empty($_POST['solde'])) {
+                        $solde = $dblink->real_escape_string($_POST['solde']);
+                        $solde = intval($solde);
+                        if($solde > 5){
+                            if(intval($UserInfosFecth->BalancePM) >= $solde){
+                                $RetraitID = bin2hex(openssl_random_pseudo_bytes(4));
+                                $RetraitID .=time();
+                                if($UserRetrait->SaveNewRetrait($UserInfosFecth->UserID, $solde,$UserPhoneNumber, $RetraitID )){
+                                    if($UserManage->DebitBalancePM($UserInfosFecth->UserID, $solde)){
+                                        if($UserManage->CreditBalanceAffiliate($UserInfosFecth->UserID, $solde)){
+                                            $UserInfosFecth =  $UserManage->GetOneUserInfos($UserID)->fetch_object();
+                                            $success = "Demande de retrait envoyé";
+                                        }else{
+                                            $db->DbError($dblink);
+                                            $error = "Une erreur  non attendu est survenue";
+                                        }
                                     }else{
-                                        $db->DbError($dblink);
-                                        $error = "Une erreur lors enregistrement de votre fichier";
+                                        $error = "Une erreur inattendue est survenue";
                                     }
-                                } else {
-                                    $error = "Erreur durant importation de image.";
+
+                                }else{
+
+                                    $error = "Une erreur est survenue";
                                 }
-                            } else {
-                                $error = "L'image doit être au format jpg, jpeg, gif ou png";
+
+                            }else{
+                                $error = "Votre solde est insuffisant";
                             }
-                        } else {
-                            $error = "La photo  ne doit pas dépasser 2Mo";
+                        }else{
+                            $error = "Le montant minimum est de 5$";
                         }
+
                     } else { $error = "La photo  n'est pas définie.";}
                 }else{
                     $error = "Votre numéro de téléphone est invalide";
@@ -127,14 +116,14 @@ $UserManage = new Auth($dblink);
                 </div>
             </div>
 
-            <?php require_once '../cloud/verify.php'?>
+            <?php // require_once '../cloud/verify.php'?>
 
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header pb-0">
-                                <h5>  <span class="iconify" data-icon="octicon:verified-16" style="color: blue;"></span> Verification d'identité</h5> <div>
+                                <h5>  <span class="iconify" data-icon="octicon:verified-16" style="color: blue;"></span> Demande de retrait</h5> <div>
 
                                     <div class="card-body">
                                         <form class="needs-validation" method="POST" enctype="multipart/form-data">
@@ -144,7 +133,7 @@ $UserManage = new Auth($dblink);
                                                     <input class="form-control" name="FullName"  type="text" value="<?=$UserInfosFecth->UserFullName?>" disabled required="">
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <label class="form-label" >Numéro de téléphone précédé de l'indicatif</label>
+                                                    <label class="form-label" > Numéro de téléphone</label>
                                                     <input class="form-control"  name="PhoneNumber"   type="number"  placeholder="22990909009" required="" >
                                                 </div>
                                                 <div class="col-md-12">
@@ -152,8 +141,8 @@ $UserManage = new Auth($dblink);
                                                     <input class="form-control"  name="Email"   type="email"  value="<?=$UserInfosFecth->UserEmail?>" disabled required="">
                                                 </div>
                                                 <div>
-                                                    <label class="form-label" >Photo de votre pièce d'identité</label>
-                                                    <input class="form-control" type="file" name="cover" aria-label="file example" required="">
+                                                    <label class="form-label" >Montant</label>
+                                                    <input class="form-control" type="number" name="solde" aria-label="file example" required="">
                                                 </div>
 
                                             </div>

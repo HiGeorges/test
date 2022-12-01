@@ -17,12 +17,33 @@
 
 
                         <li>
-                            <div class="media"><img class="img-fluid rounded-circle me-3" src="../assets/images/user/2.jpg" alt="">
-                                <div class="media-body"><span>Kori Thomas</span>
-                                    <p class="f-12 light-font">Lorem Ipsum is simply dummy...</p>
+                            <a href="index">
+                            <div class="media">
+                                <div class="media-body"><span>Tableau de bord</span>
+                                       <p class="mb-0 font-roboto">Accueil</p>
                                 </div>
-                                <p class="f-12">1 hr ago</p>
                             </div>
+                                </a>
+                        </li>
+                        <li><a href="kyc?myid=<?=$UserID?>">
+                            <div class="media">
+                                <div class="media-body"><span>Demande de retrait</span>
+                                        <p class="mb-0 font-roboto">Retrait</p>
+                                </div>
+                            </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="profil?myid=<?=$UserID?>">
+
+
+                            <div class="media">
+                                <div class="media-body"><span>Mon compte</span>
+                                        <p class="mb-0 font-roboto">Profil</p>
+                                </div>
+                            </div>
+                            </a>
                         </li>
                     </ul>
                 </li>

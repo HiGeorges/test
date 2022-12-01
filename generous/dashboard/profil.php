@@ -121,19 +121,13 @@ $UserManage = new Auth($dblink);
                         <?php require_once '../cloud/hello.php'?>
 
                         <div class="col-sm-6">
-                            <!-- Bookmark Start-->
-                            <div class="bookmark">
-                                <ul>
-                                    <li><button class="btn btn-primary" data-container="body" data-bs-toggle="popover" data-placement="top" title="" data-original-title="Tables">Faire une échange</button></li>
-                                </ul>
-                            </div>
-                            <!-- Bookmark Ends-->
+
                         </div>
                     </div>
                 </div>
             </div>
 
-            <?php require_once '../cloud/verify.php'?>
+            <?php // require_once '../cloud/verify.php'?>
 
             <div class="container-fluid">
                 <div class="row">

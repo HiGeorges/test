@@ -76,4 +76,39 @@ class Auth
         return (bool) $this->db->query($query);
     }
 
+    public function DebitBalanceMoMo($UserID, $amount): bool
+    {
+        $query = 'UPDATE UserManage SET BalanceMoMo=BalanceMoMo-'.$amount.' WHERE UserID="'.$UserID.'" ';
+        return (bool) $this->db->query($query);
+    }
+
+    public function DebitBalancePM($UserID, $amount): bool
+    {
+        $query = 'UPDATE UserManage SET BalancePM=BalancePM-'.$amount.' WHERE UserID="'.$UserID.'" ';
+        return (bool) $this->db->query($query);
+    }
+
+    public function CreditBalanceAffiliate($UserID, $amount): bool
+    {
+        $query = 'UPDATE UserManage SET BalenceAffiliate=BalenceAffiliate+'.$amount.' WHERE UserID="'.$UserID.'" ';
+        return (bool) $this->db->query($query);
+    }
+
+    public function DebitBalanceAffiliate($UserID, $amount): bool
+    {
+        $query = 'UPDATE UserManage SET BalenceAffiliate=BalenceAffiliate-'.$amount.' WHERE UserID="'.$UserID.'" ';
+        return (bool) $this->db->query($query);
+    }
+    public function CountAllUser ()
+    {
+        $query = 'SELECT * FROM UserManage';
+        return $this->db->query($query)->num_rows;
+    }
+
+    public function CrediteAllUser ($amount)
+    {
+        $query = 'UPDATE UserManage SET BalancePM=BalancePM+'.$amount.'';
+        return (bool) $this->db->query($query);
+    }
+
 }

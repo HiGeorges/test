@@ -14,6 +14,12 @@ class transactionspm{
         return  $this->db->query($query);
     }
 
+    public function SaveNewDonateTransaction($UserID , $PAYER_ACCOUNT, $PAYMENT_ID, $PAYMENT_BATCH_NUM, $PAYMENT_AMOUNT, $PAYEE_ACCOUNT, $Token){
+        $query = 'INSERT INTO TransactionManage(UserID, PAYER_ACCOUNT, T_ID, BATCH_NUM, AMOUNT, PAYEE_ACCOUNT, Token) VALUES("'.$UserID.'", "'.$PAYER_ACCOUNT.'", "'.$PAYMENT_ID.'", "'.$PAYMENT_BATCH_NUM.'", "'.$PAYMENT_AMOUNT.'","'.$PAYEE_ACCOUNT.'", "'.$Token.'")';
+        return  $this->db->query($query);
+    }
+
+
     public function CheckTransactionIDExist(string $PAYMENT_BATCH_NUM)
     {
         $query = 'SELECT * FROM TransactionManage WHERE BATCH_NUM = "'.$PAYMENT_BATCH_NUM.'" OR Token = "'.$PAYMENT_BATCH_NUM.'" ';

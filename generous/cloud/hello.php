@@ -4,12 +4,7 @@
 </div>
 <div class="col-sm-6">
     <!-- Bookmark Start-->
-    <div class="bookmark">
-        <ul>
-            <li><button class="btn btn-outline-dark btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#tooltipmodal">Recharge</button></li>
-            <li><button class="btn btn-outline-primary btn-sm">Faire une échange</button></li>
-        </ul>
-    </div>
+
 
     <?php
 
