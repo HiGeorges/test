@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-        <?php // require_once '../cloud/verify.php'?>
+        <?php  require_once '../cloud/verify.php'?>
 
             <div class="container-fluid general-widget">
                 <div class="row">
@@ -84,6 +84,7 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="display" id="basic-1">
+                                <?php  ?>
                                 <thead>
                                 <tr>
                                     <th>ID</th>

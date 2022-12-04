@@ -25,6 +25,14 @@
                             </div>
                                 </a>
                         </li>
+                        <li><a href="verify?myid=<?=$UserID?>">
+                                <div class="media">
+                                    <div class="media-body"><span>Verifiication</span>
+                                        <p class="mb-0 font-roboto">Verifier son compte</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
                         <li><a href="kyc?myid=<?=$UserID?>">
                             <div class="media">
                                 <div class="media-body"><span>Demande de retrait</span>
@@ -33,12 +41,9 @@
                             </div>
                             </a>
                         </li>
-
                         <li>
                             <a href="profil?myid=<?=$UserID?>">
-
-
-                            <div class="media">
+                                <div class="media">
                                 <div class="media-body"><span>Mon compte</span>
                                         <p class="mb-0 font-roboto">Profil</p>
                                 </div>

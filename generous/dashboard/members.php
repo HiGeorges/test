@@ -14,7 +14,6 @@ $UserManage = new Auth($dblink);
 $TransactionManage = new transactionspm($dblink);
 $AdminKeyManage = new AdminKey($dblink);
 $Key = $AdminKeyManage->GetAdminUPerfect(1)->fetch_object();
-$UserID = "admin";
 ?>
 
 <?php
@@ -27,28 +26,16 @@ if (isset($_POST["PAYEE_ACCOUNT"], $_POST["PAYMENT_AMOUNT"], $_POST["PAYMENT_UNI
         $PAYMENT_ID = $dblink->real_escape_string($_POST['PAYMENT_ID']);
         $PAYER_ACCOUNT = $dblink->real_escape_string($_POST['PAYER_ACCOUNT']);
         $PAYMENT_BATCH_NUM = $dblink->real_escape_string($_POST['PAYMENT_BATCH_NUM']);
-        $PAYUserAmont = $PAYMENT_AMOUNT*40/100;
-        $TOTALUser = $UserManage->CountAllUser();
-        $PayForUser = $PAYUserAmont/$TOTALUser;
 
 
         if (!$TransactionManage->CheckTransactionIDExist($PAYMENT_BATCH_NUM)) {
             $Token = bin2hex(openssl_random_pseudo_bytes(4));
             $Token .= $TransactionManage->CountTransaction();
-            if ($TransactionManage->SaveNewTransaction($UserID, $PAYER_ACCOUNT, $PAYMENT_ID, $PAYMENT_BATCH_NUM, $PAYMENT_AMOUNT, $PAYEE_ACCOUNT, $Token)) {
-                if ($UserManage->CreditAllUsersVerify($PayForUser)) {
-                    $success = "Merci pour votre don, Tous les bénéficiaires ont été crédités";
-                } else {
-                    $error = "Une erreur enregistrée lors du crédit";
-                }
-
-            } else {
-
-                $error = "Une erreur produite lors du sauvegarde";
+            if($UserManage->UpdateUserStatus($UserID)){
+            $success = "Votre compte est verifié avec succès";
+            }else{
+            $error = "Une erreur est survenue";
             }
-
-        } else {
-            $error = "Cette transaction est déjà enregistré";
         }
 
     } else {
@@ -81,7 +68,7 @@ if (isset($_POST["PAYEE_ACCOUNT"], $_POST["PAYMENT_AMOUNT"], $_POST["PAYMENT_UNI
                         <div class="login-card">
                             <form class="theme-form login-form" method="post">
                                 <h4>Merci beaucoup  <span class="iconify-inline" data-icon="twemoji:party-popper" style="color: rgba(34, 34, 51, 0.13333333333333333);"></span> </h4>
-                                <h6>Vous faites partis désormais du programme bénéficiare .</h6>
+                                <h6>Nous sommes heureux .</h6>
 
                                 <div class="">
                                     <div class="card testimonial text-center">
@@ -93,6 +80,10 @@ if (isset($_POST["PAYEE_ACCOUNT"], $_POST["PAYMENT_AMOUNT"], $_POST["PAYMENT_UNI
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <a class="btn btn-primary btn-block" href="index">Revenir au tableau e bord</a>
                                 </div>
                         </div>
                     </div>

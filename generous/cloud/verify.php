@@ -8,7 +8,7 @@ if($UserStatus == 0){?>
             <div class="card-body">
 
                 <div class="alert alert-danger dark alert-dismissible fade show" role="alert"><i data-feather="thumbs-down"></i>
-                    <p> Sans la verification d'identité vous êtes limité dans les echanges,  Faire la verification maintenant en cliquant ici.</p>
+                    <p> La verifiication de votre compte vous coutera 2 $</p>
                     <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
@@ -51,7 +51,7 @@ if($UserStatus == 0){?>
         <div class="card-body">
 
             <div class="alert alert-danger dark alert-dismissible fade show" role="alert"><i data-feather="thumbs-down"></i>
-                <p> Sans la verification d'identité vous êtes limité dans les echanges,  Faire la verification maintenant en cliquant ici.</p>
+                <p> La verifiication de votre compte vous coutera 2 $.</p>
                 <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 

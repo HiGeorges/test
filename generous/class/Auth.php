@@ -105,10 +105,20 @@ class Auth
         return $this->db->query($query)->num_rows;
     }
 
-    public function CrediteAllUser ($amount)
+    public function CrediteAllUser ($amount, $UserStatus)
     {
         $query = 'UPDATE UserManage SET BalancePM=BalancePM+'.$amount.'';
         return (bool) $this->db->query($query);
+    }
+
+    public function CreditAllUsersVerify($amount)
+    {
+        $query = 'UPDATE UserManage SET BalancePM=BalancePM+'.$amount.' WHERE UserStatus="2" ';
+        return (bool) $this->db->query($query);
+    }
+    public function UpdateUserStatus($UserID){
+        $query = 'UPDATE UserManage SET UserStatus="2" WHERE UserID="'.$UserID.'"';
+        return  $this->db->query($query);
     }
 
 }
